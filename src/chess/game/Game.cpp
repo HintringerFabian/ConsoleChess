@@ -19,18 +19,17 @@ void Game::play() {
         auto piece = (player_vs_player) ?
                 player_choose_piece(current_player) : ai_choose_piece(current_player);
 
-        // the gameboard function has to return at least one valid to
+        // the gameboard function has to return at least one valid move
         // for the chosen piece, else the player has to choose another piece
         valid_moves = gameboard.get_valid_moves_for(piece);
 
         if (!valid_moves.empty()) {
             gameboard.print(valid_moves);
             // it has already been checked, that the moves
-            // here are valid, so let the player or ai choose one to
-            // and to the piece
+            // here are valid, so let the player or ai choose one move
+            // and move the piece
             auto move = (player_vs_player) ?
                     player_choose_move(current_player, valid_moves) : ai_choose_move(valid_moves);
-            //gameboard.move_piece(piece, to, get_promotion_piece);
 
             // call the function
             gameboard.move_piece(piece, move, true);
@@ -98,15 +97,15 @@ void Game::print_player_action(Color color, const std::string& action) {
 }
 
 /**
- * Asks the player to choose a to. And checks if the input is valid.
- * If the input is not valid, the player has to choose another to.
- * The user input has to be a valid to for the chosen piece.
+ * Asks the player to choose a move. And checks if the input is valid.
+ * If the input is not valid, the player has to choose another move.
+ * The user input has to be a valid move for the chosen piece.
  * @param color The player of the player.
  * @param valid_moves The vector of valid moves.
- * @return The from of the chosen to.
+ * @return The result of the chosen move.
  */
 Position Game::player_choose_move(Color color, const VecPos& valid_moves) {
-    print_player_action(color, "choose a to");
+    print_player_action(color, "choose a move");
 
     auto input = get_input();
     auto result = get_position(input);
@@ -137,7 +136,7 @@ Position Game::ai_choose_piece(Color color) {
         auto x = rand() % 8;
         auto y = rand() % 8;
 
-        // convert the numbers to a from
+        // convert the numbers to a position
         position = Position(x, y);
         position = gameboard.check_piece(position, color);
     }

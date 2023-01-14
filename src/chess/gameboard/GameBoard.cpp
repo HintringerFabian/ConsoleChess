@@ -419,7 +419,8 @@ void GameBoard::move_piece(Position old_pos, Position new_pos, bool not_tmp) {
     // and also to the piece, but we do not want to check for a promotion
     if (not_tmp) {
         // if this is not the tmp_board which is used to check if the king is in check
-        // then we need to
+        // then we need to check if the piece to is a pawn and if it is able to promote
+        // and update the last_move
 
         // promotion check
         auto player_color = board[new_x][new_y]->get_color();
