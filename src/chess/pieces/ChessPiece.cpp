@@ -384,7 +384,7 @@ VecPos Pawn::get_moves_for(Position position, const std::unique_ptr<ChessPiece> 
         // check if new from is on board and empty or enemy
         if (
             is_on_board(x, y) &&
-            is_empty_or_enemy(board, x, y)
+            is_empty(board, x, y)
         ) {
             auto new_position = Position(x, y);
             valid_moves.push_back(new_position);
