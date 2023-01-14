@@ -26,6 +26,6 @@ you may need to change the CMakeLists.txt file to reflect the version of CMake y
 ## Last words
 
 The game has been tested on Linux and does not work on Windows. 
-If you encounter any bugs or issues, please open an issue on this repository and let us know.
+If you encounter any bugs or issues, please open an issue on this repository and let me know.
 
 Enjoy the game!
