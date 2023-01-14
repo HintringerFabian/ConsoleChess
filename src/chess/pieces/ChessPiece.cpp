@@ -53,19 +53,11 @@ bool ChessPiece::is_empty(const std::unique_ptr<ChessPiece> (&board)[8][8], int 
 // *****************************************************
 
 King::King(Color color) : ChessPiece(color) {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-    if (color == Color::WHITE) {
-        set_symbol("K");
-    } else {
-        set_symbol("k");
-    }
-#else
     if (color == Color::WHITE) {
         set_symbol("♚");
     } else {
         set_symbol("♔");
     }
-#endif
 }
 
 VecPos King::get_moves_for(Position position, const std::unique_ptr<ChessPiece> (&board)[8][8]) {
@@ -119,7 +111,7 @@ VecPos King::get_horse_attackers(const std::unique_ptr<ChessPiece> (&board)[8][8
  * Check if the king is able to castle to the left or right.
  * @param position of the king
  * @param pPtr to the board
- * @param left check the left side or right side?
+ * @param left check the left side or the right side?
  * @param color color of the current player
  * @param flipped is the board flipped?
  * @return A vector of positions that have possible castling moves
@@ -185,19 +177,11 @@ VecPos King::get_castling(const Position position, std::unique_ptr<ChessPiece> p
 // *****************************************************
 
 Queen::Queen(Color color) : ChessPiece(color) {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-    if (color == Color::WHITE) {
-        set_symbol("Q");
-    } else {
-        set_symbol("q");
-    }
-#else
     if (color == Color::WHITE) {
         set_symbol("♛");
     } else {
         set_symbol("♕");
     }
-#endif
 }
 
 VecPos Queen::get_moves_for(Position position, const std::unique_ptr<ChessPiece> (&board)[8][8]) {
@@ -222,19 +206,11 @@ VecPos Queen::get_moves_for(Position position, const std::unique_ptr<ChessPiece>
 // *****************************************************
 
 Bishop::Bishop(Color color) : ChessPiece(color) {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-    if (color == Color::WHITE) {
-        set_symbol("B");
-    } else {
-        set_symbol("b");
-    }
-#else
     if (color == Color::WHITE) {
         set_symbol("♝");
     } else {
         set_symbol("♗");
     }
-#endif
 }
 
 VecPos Bishop::get_moves_for(Position position, const std::unique_ptr<ChessPiece> (&board)[8][8]) {
@@ -279,19 +255,11 @@ VecPos Bishop::get_moves_for(Position position, const std::unique_ptr<ChessPiece
 // *****************************************************
 
 Knight::Knight(Color color) : ChessPiece(color) {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-    if (color == Color::WHITE) {
-        set_symbol("N");
-    } else {
-        set_symbol("n");
-    }
-#else
     if (color == Color::WHITE) {
         set_symbol("♞");
     } else {
         set_symbol("♘");
     }
-#endif
 }
 
 VecPos Knight::get_moves_for(Position position, const std::unique_ptr<ChessPiece> (&board)[8][8]) {
@@ -330,19 +298,11 @@ bool Knight::is_valid_delta(int &x, int &y) {
 // *****************************************************
 
 Rook::Rook(Color color) : ChessPiece(color) {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-    if (color == Color::WHITE) {
-        set_symbol("R");
-    } else {
-        set_symbol("r");
-    }
-#else
     if (color == Color::WHITE) {
         set_symbol("♜");
     } else {
         set_symbol("♖");
     }
-#endif
 }
 
 VecPos Rook::get_moves_for(Position position, const std::unique_ptr<ChessPiece> (&board)[8][8]) {
@@ -399,19 +359,11 @@ bool Rook::is_valid_delta(int &x, int &y) {
 // *****************************************************
 
 Pawn::Pawn(Color color) : ChessPiece(color) {
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-    if (color == Color::WHITE) {
-        set_symbol("P");
-    } else {
-        set_symbol("p");
-    }
-#else
     if (color == Color::WHITE) {
         set_symbol("♟");
     } else {
         set_symbol("♙");
     }
-#endif
 }
 
 VecPos Pawn::get_moves_for(Position position, const std::unique_ptr<ChessPiece> (&board)[8][8]) {
@@ -521,7 +473,7 @@ Position Pawn::get_en_passant(Position position, const std::unique_ptr<ChessPiec
 
     // check if the enemy pawn is standing directly next to the pawn
     // if not the last move is not a move that allows en passant
-    if (abs(enemy_pawn_y - position.get_y()) != 1) {
+    if (abs(enemy_pawn_y - position.get_y()) != 1 || enemy_pawn_x != position.get_x()) {
         return {-1, -1};
     }
 

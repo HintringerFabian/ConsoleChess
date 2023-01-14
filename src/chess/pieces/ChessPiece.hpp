@@ -22,7 +22,7 @@ protected:
 
 public:
     ChessPiece(Color c) : color(c) {}
-    ~ChessPiece() = default;
+    virtual ~ChessPiece() = default;
 
     [[nodiscard]] Color get_color() const {
         return color;

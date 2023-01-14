@@ -2,15 +2,7 @@
 #include "../gameboard/GameBoard.hpp"
 #include "../color/Color.hpp"
 #include "../position/Position.hpp"
-
-// Sleep lib
-// Library effective with Windows
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
-#include <windows.h>
-#else
-// Library effective with Linux
 #include <unistd.h>
-#endif
 
 class Game {
     GameBoard gameboard;

@@ -14,7 +14,7 @@ int main() {
     // En passant will create a game where white can capture a pawn with en passant with 2 moves
     // Castling will create a game where white/black can castle with 1 move, also the detection of check when castling is tested
     // Check will create a game where white can create a check with one move
-    auto game_type = GameTest::CHECK;
+    auto game_type = GameTest::NORMAL;
 
     Game game{game_type};
     game.play();

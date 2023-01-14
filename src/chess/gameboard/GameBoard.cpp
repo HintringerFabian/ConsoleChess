@@ -558,18 +558,8 @@ void GameBoard::init_castling() {
     board[7][0] = make_unique<Rook>(Color::BLACK);
 }
 
-/**
- * Clear the screen, implemented for Windows and Linux.
- */
 void GameBoard::clear_screen() {
-#ifdef WINDOWS
-    // command for windows to clear screen
-    std::cout << "\033[2J\033[1;1H";
-#else
-    // command for linux to clear screen
-    // does not work in CLion terminal but works in linux terminal
     std::cout << "\x1B[2J\x1B[H";
-#endif
 }
 
 /**
