@@ -319,6 +319,8 @@ void GameBoard::find_king(const Color &current_player, King *&king, Position &ki
  *        Returns the from if the piece is of the players player.
  */
 Position GameBoard::check_piece(Position position, Color color) {
+    if(!position.is_valid()) return {};
+
     auto x = position.get_x();
     auto y = position.get_y();
 
@@ -328,7 +330,7 @@ Position GameBoard::check_piece(Position position, Color color) {
         return position;
     }
 
-    return {-1, -1};
+    return {};
 }
 
 /** Player interaction to choose the piece to promote to.
