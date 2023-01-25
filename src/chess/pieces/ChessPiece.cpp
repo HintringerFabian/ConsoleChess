@@ -5,40 +5,40 @@
 // *****************************************************
 
 /**
- * Check if the delta from has not changed
- * Used to check if the from is the same as the old one in a loop
+ * Check if the delta position has not changed
+ * Used to check if the position is the same as the old one in a loop
  * where the positions are incremented/decremented
- * @param x the x delta from
- * @param y the y delta from
+ * @param x the x delta position
+ * @param y the y delta position
  */
 bool ChessPiece::delta_changed(int &x, int &y) {
     return !(x == 0 && y == 0);
 }
 
 /**
- * Check if the from is on the board
- * @param x the x from
- * @param y the y from
+ * Check if the position is on the board
+ * @param x the x position
+ * @param y the y position
  */
 bool ChessPiece::is_on_board(int &x, int &y) {
     return Position(x, y).is_valid();
 }
 
 /**
- * Check if the from is empty or has an enemy piece
+ * Check if the position is empty or has an enemy piece
  * @param board the gameboard with all the pieces
- * @param x the x from on the board
- * @param y the y from on the board
+ * @param x the x position on the board
+ * @param y the y position on the board
  */
 bool ChessPiece::is_empty_or_enemy(const std::unique_ptr<ChessPiece> (&board)[8][8], int &x, int &y) const {
     return is_empty(board, x, y) || is_enemy(board, x, y);
 }
 
 /**
- * Check if the from has an enemy piece
+ * Check if the position has an enemy piece
  * @param board the gameboard with all the pieces
- * @param x the x from on the board
- * @param y the y from on the board
+ * @param x the x position on the board
+ * @param y the y position on the board
  */
 bool ChessPiece::is_enemy(const std::unique_ptr<ChessPiece> (&board)[8][8], int &x, int &y) const {
     return !is_empty(board, x, y) && board[x][y]->get_color() != this->get_color();
@@ -185,7 +185,7 @@ Queen::Queen(Color color) : ChessPiece(color) {
 }
 
 VecPos Queen::get_moves_for(Position position, const std::unique_ptr<ChessPiece> (&board)[8][8]) {
-    // We take advantage of the fact that the queen can to like a rook OR a bishop
+    // We take advantage of the fact that the queen can move like a rook OR a bishop
     auto bishop = std::make_unique<Bishop>(this->get_color());
     auto rook = std::make_unique<Rook>(this->get_color());
 
@@ -220,7 +220,7 @@ VecPos Bishop::get_moves_for(Position position, const std::unique_ptr<ChessPiece
     auto py = position.get_y();
 
     // First two loops are for the positive x and y
-    // Note that 0 is not included, because the bishop can't to
+    // Note that 0 is not included, because the bishop can't move
     // in a straight line, only diagonally
     for (int i = -1; i <= 1; i += 2) {
         for (int j = -1; j <= 1; j += 2) {
@@ -238,8 +238,8 @@ VecPos Bishop::get_moves_for(Position position, const std::unique_ptr<ChessPiece
                     }
                 }
 
-                // if the from in any direction is not empty,
-                // we can't to any further in that direction
+                // if the position in any direction is not empty,
+                // we can't move any further in that direction
                 if (!is_on_board(x, y) || !is_empty(board, x, y)) {
                     break;
                 }
@@ -313,7 +313,7 @@ VecPos Rook::get_moves_for(Position position, const std::unique_ptr<ChessPiece> 
 
     // First two loops are for the positive x and y
     // Note that 0 is included in the loop, this allows us to check the
-    // horizontal and vertical lines, because the rook can only to in
+    // horizontal and vertical lines, because the rook can only move in
     // a straight line.
     for (int i = -1; i <= 1; ++i) {
         for (int j = -1; j <= 1; ++j) {
@@ -338,8 +338,8 @@ VecPos Rook::get_moves_for(Position position, const std::unique_ptr<ChessPiece> 
                     valid_moves.push_back(new_position);
                 }
 
-                // if the from in any direction is not empty,
-                // we can't to any further in that direction
+                // if the position in any direction is not empty,
+                // we can't move any further in that direction
                 if (board[x][y] != nullptr) {
                     break;
                 }
@@ -369,19 +369,19 @@ Pawn::Pawn(Color color) : ChessPiece(color) {
 VecPos Pawn::get_moves_for(Position position, const std::unique_ptr<ChessPiece> (&board)[8][8]) {
     VecPos valid_moves;
 
-    // check if the pawn can to 1 up
+    // check if the pawn can move 1 up
     auto px = position.get_x();
     auto py = position.get_y();
 
     bool enemy_ahead = false;
 
-    // block for checking if the pawn can to 1 up
+    // block for checking if the pawn can move 1 up
     // this block also checks if there is an enemy 1 up
     {
         auto x = px + 1;
         auto y = py;
 
-        // check if new from is on board and empty or enemy
+        // check if new position is on board and empty or enemy
         if (
             is_on_board(x, y) &&
             is_empty(board, x, y)
@@ -395,12 +395,12 @@ VecPos Pawn::get_moves_for(Position position, const std::unique_ptr<ChessPiece> 
         }
     }
 
-    // block for checking if the pawn can to 2 up
+    // block for checking if the pawn can move 2 up
     {
         auto x = px + 2;
         auto y = py;
 
-        // check if new from is on board and empty or enemy
+        // check if new position is on board and empty or enemy
         if (
             first_move &&
             !enemy_ahead &&
@@ -412,13 +412,13 @@ VecPos Pawn::get_moves_for(Position position, const std::unique_ptr<ChessPiece> 
         }
     }
 
-    // block for checking if the pawn can to 1 up and 1 left
+    // block for checking if the pawn can move 1 up and 1 left
     // aka take enemy piece on the left
     {
         auto x = px + 1;
         auto y = py - 1;
 
-        // check if new from is on board and empty or enemy
+        // check if new position is on board and empty or enemy
         if (
             is_on_board(x, y) &&
             is_enemy(board, x, y)
@@ -428,13 +428,13 @@ VecPos Pawn::get_moves_for(Position position, const std::unique_ptr<ChessPiece> 
         }
     }
 
-    // block for checking if the pawn can to 1 up and 1 right
+    // block for checking if the pawn can move 1 up and 1 right
     // aka take enemy piece on the right
     {
         auto x = px + 1;
         auto y = py + 1;
 
-        // check if new from is on board and empty or enemy
+        // check if new position is on board and empty or enemy
         if (
             is_on_board(x, y) &&
             is_enemy(board, x, y)
@@ -448,16 +448,16 @@ VecPos Pawn::get_moves_for(Position position, const std::unique_ptr<ChessPiece> 
 }
 
 Position Pawn::get_en_passant(Position position, const std::unique_ptr<ChessPiece> (&board)[8][8], const LastMove& last_move) {
-    // get the delta x and y from the last move
+    // get the delta x and y position the last move
     auto delta_x = last_move.get_to().get_x() - last_move.get_from().get_x();
     auto delta_y = last_move.get_to().get_y() - last_move.get_from().get_y();
 
-    // if delta y is not 2, the last move is not a move that allows en passant
+    // if delta x is not 2, the last move is not a move that allows en passant
     if (abs(delta_x) != 2) {
         return {-1, -1};
     }
 
-    // if the delta x is not 0, the last move is not a move that allows en passant
+    // if the delta y is not 0, the last move is not a move that allows en passant
     if (delta_y != 0) {
         return {-1, -1};
     }

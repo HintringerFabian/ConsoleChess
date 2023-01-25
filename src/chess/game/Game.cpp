@@ -12,7 +12,7 @@ void Game::play() {
 
     // game loop
     while (valid_moves.empty()) {
-        // print board
+
         gameboard.print();
 
         // get player input if it is a game of 2 players
@@ -31,7 +31,6 @@ void Game::play() {
             auto move = (player_vs_player) ?
                     player_choose_move(current_player, valid_moves) : ai_choose_move(valid_moves);
 
-            // call the function
             gameboard.move_piece(piece, move, true);
 
             // piece has been moved, so clear the vector
@@ -65,7 +64,7 @@ void Game::play() {
  * Asks the player to choose a piece. And checks if the input is valid.
  * If the input is not valid, the player has to choose another piece.
  * @param color The player of the player.
- * @return The from of the chosen piece.
+ * @return The position of the chosen piece.
  */
 Position Game::player_choose_piece(Color color) {
     print_player_action(color, "choose a piece");
@@ -126,7 +125,7 @@ Position Game::player_choose_move(Color color, const VecPos& valid_moves) {
  * Asks the ai to choose a piece. And checks if the input is valid.
  * If the input is not valid, the ai has to choose another piece.
  * @param color The player of the ai.
- * @return The from of the chosen piece.
+ * @return The position of the chosen piece.
  */
 Position Game::ai_choose_piece(Color color) {
     auto position = Position(-1, -1);
@@ -147,7 +146,7 @@ Position Game::ai_choose_piece(Color color) {
 /**
  * Asks the ai to choose a one of the valid moves.
  * @param valid_moves The vector of valid moves.
- * @return The from of the chosen to.
+ * @return The position of the chosen move.
  */
 Position Game::ai_choose_move(const VecPos &valid_moves) {
     Position result;
@@ -187,11 +186,11 @@ std::string Game::get_input() {
 }
 
 /**
- * Gets the from from the user input.
+ * Gets the position from the user input.
  * Therefore the string is converted to integers and
- * the representative from on the gameboard is returned.
+ * the representative position on the gameboard is returned.
  * @param input The user input.
- * @return The from.
+ * @return The position.
  */
 Position Game::get_position(std::string field) {
     int row, column;

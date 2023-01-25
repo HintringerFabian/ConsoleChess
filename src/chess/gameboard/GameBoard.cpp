@@ -105,8 +105,8 @@ void GameBoard::print() const {
 }
 
 /**
- * Prints the current gameboard with the valid moves for the given from.
- * @param valid_moves The valid moves for the given from.
+ * Prints the current gameboard with the valid moves for the given position.
+ * @param valid_moves The valid moves for the given position.
  */
 void GameBoard::print(const VecPos& valid_moves) const {
     clear_screen();
@@ -151,9 +151,9 @@ void GameBoard::print(const VecPos& valid_moves) const {
 }
 
 /**
- * Gets the valid moves for the piece on the given from.
- * If there is no piece on the given from, an empty vector is returned.
- * @param position The from.
+ * Gets the valid moves for the piece on the given position.
+ * If there is no piece on the given position, an empty vector is returned.
+ * @param position The position.
  * @return The valid moves.
  */
 VecPos GameBoard::get_valid_moves_for(const Position position) {
@@ -268,7 +268,7 @@ void GameBoard::validate_moves(const Position &position, ChessPiece *piece, VecP
 }
 
 /**
- * Moves the piece from the given from to the given to.
+ * Moves the piece from the given position to the given position.
  * @param current_player The color of the player that is moving.
  */
 bool GameBoard::is_king_in_check(Color current_player) const {
@@ -312,11 +312,11 @@ void GameBoard::find_king(const Color &current_player, King *&king, Position &ki
 }
 
 /**
- * Checks if the piece at the given from is of the players player
- * @param position The from of the piece.
+ * Checks if the piece at the given position is of the players player
+ * @param position The position of the piece.
  * @param color The player of the player.
  * @return Returns a false Position if the piece is not of the players player.
- *        Returns the from if the piece is of the players player.
+ *        Returns the position if the piece is of the players player.
  */
 Position GameBoard::check_piece(Position position, Color color) {
     if(!position.is_valid()) return {};
@@ -349,10 +349,10 @@ char GameBoard::get_promotion_piece() {
 }
 
 /**
- * Moves the piece from the old from to the new from.
+ * Moves the piece from the old position to the new position.
  * Clears the enemys piece if there is one.
- * @param old_pos The old from.
- * @param new_pos The new from.
+ * @param old_pos The old position.
+ * @param new_pos The new position.
  */
 void GameBoard::move_piece(Position old_pos, Position new_pos, bool not_tmp) {
     auto old_x = old_pos.get_x();
@@ -360,8 +360,8 @@ void GameBoard::move_piece(Position old_pos, Position new_pos, bool not_tmp) {
     auto new_x = new_pos.get_x();
     auto new_y = new_pos.get_y();
 
-    // check if there is a piece on the new from
-    // if there is a piece on the new from, delete it
+    // check if there is a piece on the new position
+    // if there is a piece on the new position, delete it
     if (board[new_x][new_y]) {
         board[new_x][new_y].reset();
     }
@@ -369,17 +369,17 @@ void GameBoard::move_piece(Position old_pos, Position new_pos, bool not_tmp) {
     // some pieces have special moves, which occur when they do their first move,
     // so we need to track the first move of the piece
 
-    // if the piece to is a pawn, set the value that the pawn has moved
+    // if the piece moved is a pawn, set the value that the pawn has moved
     if (board[old_x][old_y]->get_name() == 'P') {
         dynamic_cast<Pawn*>(board[old_x][old_y].get())->set_moved(true);
     }
 
-        // if the piece to is a king, set the value that the king has moved
+        // if the piece moved is a king, set the value that the king has moved
     else if (board[old_x][old_y]->get_name() == 'K') {
         dynamic_cast<King*>(board[old_x][old_y].get())->set_moved(true);
     }
 
-        // if the piece to is a rook, set the value that the rook has moved
+        // if the piece moved is a rook, set the value that the rook has moved
     else if (board[old_x][old_y]->get_name() == 'R') {
         dynamic_cast<Rook*>(board[old_x][old_y].get())->set_moved(true);
     }
@@ -392,10 +392,10 @@ void GameBoard::move_piece(Position old_pos, Position new_pos, bool not_tmp) {
     }
 
     // extra check for castling
-    // if the piece to is a king and the new from is two fields away from the old from
+    // if the piece moved is a king and the new position is two fields away from the old position
     // we need to move the rook as well
     if (board[old_x][old_y]->get_name() == 'K' && abs(new_y - old_y) == 2) {
-        // if the new from is two fields to the right of the old from
+        // if the new position is two fields to the right of the old position
         // we need to move the rook on the right side
         if (new_y - old_y == 2) {
             // move the rook to the right side
@@ -403,7 +403,7 @@ void GameBoard::move_piece(Position old_pos, Position new_pos, bool not_tmp) {
             board[new_x][7].reset();
         }
 
-            // if the new from is two fields to the left of the old from
+            // if the new position is two fields to the left of the old position
             // we need to move the rook on the left side
         else {
             // move the rook to the left side
@@ -412,16 +412,16 @@ void GameBoard::move_piece(Position old_pos, Position new_pos, bool not_tmp) {
         }
     }
 
-    // to the piece
+    // move the piece
     board[new_x][new_y] = std::move(board[old_x][old_y]);
 
     // bool not_tmp is manually set to true or false at 2 positions
     // it has to be manually set because we do not want to check for a promotion
     // when we are checking if the king is in check, there we check all possible moves
-    // and also to the piece, but we do not want to check for a promotion
+    // and also move the piece, but we do not want to check for a promotion
     if (not_tmp) {
         // if this is not the tmp_board which is used to check if the king is in check
-        // then we need to check if the piece to is a pawn and if it is able to promote
+        // then we need to check if the piece moved is a pawn and if it is able to promote
         // and update the last_move
 
         // promotion check

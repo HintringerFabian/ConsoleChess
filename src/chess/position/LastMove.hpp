@@ -2,9 +2,8 @@
 #include "Position.hpp"
 #include "../color/Color.hpp"
 
-//class last to which saves the piece of the piece,
-// the from of the piece and the from of the to
-// create a getter and setter for every variable
+// class that saves the last moved piece
+// the old and new position
 class LastMove {
     char piece;
     Position from;
